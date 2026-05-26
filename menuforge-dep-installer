@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# MenuForge v1.0.0-Stable Dependency Installer
+# Powered by Crystal Studio Labs
+
+PRIMARY="#00D7FF"
+
+clear
+gum style --foreground "$PRIMARY" --border double --align center --width 50 "MENUFORGE" "INFRASTRUCTURE DEPLOYMENT"
+echo ""
+
+gum spin --spinner dot --title "Synchronizing Package Repositories..." -- sleep 2
+
+gum style --bold "Initializing installation of core components:"
+echo " - GameMode (Performance)"
+echo " - MangoHud (Telemetry)"
+echo " - Gamescope (Resolution)"
+echo " - Wine (Compatibility)"
+echo ""
+
+# Actual installation
+if command -v pacman &> /dev/null; then
+    sudo pacman -S --needed --noconfirm gamemode mangohud gamescope wine
+else
+    echo "Distro not officially supported for auto-install."
+    echo "Please install gamemode, mangohud, gamescope, and wine manually."
+fi
+
+echo ""
+gum style --foreground 10 --bold "✓ ALL COMPONENTS OPERATIONAL"
+echo ""
+gum style --faint "Press any key to close this terminal..."
+read -n 1

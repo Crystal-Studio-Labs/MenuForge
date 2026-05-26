@@ -1,0 +1,353 @@
+#!/bin/bash
+
+# MenuForge v1.1.0-Stable
+# Developed by SahooShuvranshu (https://github.com/SahooShuvranshu)
+# Organization: Crystal Studio Labs (https://github.com/Crystal-Studio-Labs)
+# Contact: connect.crystalstudio@gmail.com
+# License: MIT
+# The universal Desktop Entry (.desktop) generator for Linux.
+
+# --- Branding & Colors ---
+GUM_CONF="/home/crystal/.config/omarchy/current/theme/gum.env.conf"
+if [ -f "$GUM_CONF" ]; then
+    PRIMARY=$(grep "GUM_CHOOSE_CURSOR_FOREGROUND" "$GUM_CONF" | cut -d',' -f2 | tr -d '#')
+    SECONDARY=$(grep "GUM_CHOOSE_HEADER_FOREGROUND" "$GUM_CONF" | cut -d',' -f2 | tr -d '#')
+else
+    PRIMARY="#00D7FF" # Cyan
+    SECONDARY="#FFFFFF" # White
+fi
+ACCENT="#FCC624"
+APP_DIR_USER="$HOME/.local/share/applications"
+
+# --- Styling & Helpers ---
+banner() {
+    clear
+    echo ""
+    # High-Quality MenuForge Block Art
+    gum style --foreground "$PRIMARY" --align center --width 60 "
+  ███╗   ███╗███████╗███╗   ██╗██╗   ██╗
+  ████╗ ████║██╔════╝████╗  ██║██║   ██║
+  ██╔████╔██║█████╗  ██╔██╗ ██║██║   ██║
+  ██║╚██╔╝██║██╔══╝  ██║╚██╗██║██║   ██║
+  ██║ ╚═╝ ██║███████╗██║ ╚████║╚██████╔╝
+  ╚═╝     ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝ 
+  ███████╗ ██████╗ ██████╗  ██████╗ ███████╗
+  ██╔════╝██╔═══██╗██╔══██╗██╔════╝ ██╔════╝
+  █████╗  ██║   ██║██████╔╝██║  ███╗█████╗  
+  ██╔══╝  ██║   ██║██╔══██╗██║   ██║██╔══╝  
+  ██║     ╚██████╔╝██║  ██║╚██████╔╝███████╗
+  ╚═╝      ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
+"
+    gum style \
+        --foreground "$PRIMARY" --border-foreground "$PRIMARY" --border rounded \
+        --align center --width 60 --margin "0 2" --padding "1 1" \
+        "MENUFORGE v1.1.0-Stable" \
+        "Universal Linux Menu Creator | Crystal Studio Labs"
+    echo ""
+}
+
+step_header() {
+    gum style --foreground "$PRIMARY" --bold " ❯ $2 "
+}
+
+instruction_box() {
+    gum style \
+        --border normal --border-foreground "$SECONDARY" \
+        --padding "1 2" --margin "1 0" --width 58 \
+        "$1"
+}
+
+check_dep_status() {
+    if command -v "$1" &> /dev/null; then
+        echo -e " [✔] $1 - OPERATIONAL"
+    else
+        echo -e " [✘] $1 - NOT INSTALLED"
+    fi
+}
+
+refresh_menu() {
+    if command -v walker &> /dev/null; then pkill -HUP walker; fi
+    if command -v rofi &> /dev/null; then pkill -HUP rofi 2>/dev/null; fi
+}
+
+# --- 1. Main Menu ---
+main_menu() {
+    banner
+    gum style --faint " Developed by SahooShuvranshu (github.com/SahooShuvranshu)"
+    gum style --faint " Crystal Studio Labs (github.com/Crystal-Studio-Labs)"
+    echo " ------------------------------------------------------------"
+    echo ""
+
+    ACTION=$(gum choose "ADD_NEW_LINK" "REMOVE_LINK" "MANAGE_DEPENDENCIES" "EXIT")
+
+    case "$ACTION" in
+        "ADD_NEW_LINK") create_shortcut ;;
+        "REMOVE_LINK") remove_shortcut ;;
+        "MANAGE_DEPENDENCIES") manage_dependencies ;;
+        *) 
+            banner
+            gum style --foreground "$PRIMARY" --bold "System Hibernation Initialized. Goodbye."
+            echo ""
+            exit 0 
+            ;;
+    esac
+}
+
+# --- 2. Dependency Manager ---
+manage_dependencies() {
+    banner
+    step_header "INFRA" "DEPENDENCY_STATUS"
+    instruction_box "This module verifies critical optimization layers. Selecting 'Install' will launch a new forge process."
+    echo ""
+    check_dep_status "gamemode"
+    check_dep_status "mangohud"
+    check_dep_status "gamescope"
+    check_dep_status "wine"
+    echo ""
+
+    DEP_ACTION=$(gum choose "INSTALL_ALL_MISSING" "BACK_TO_CORE")
+
+    if [ "$DEP_ACTION" == "INSTALL_ALL_MISSING" ]; then
+        if command -v xdg-terminal-exec &> /dev/null; then
+            xdg-terminal-exec menuforge-dep-installer
+        else
+            alacritty -e menuforge-dep-installer || kitty -e menuforge-dep-installer || foot -e menuforge-dep-installer || ghostty -e menuforge-dep-installer
+        fi
+        gum style --foreground "$PRIMARY" "Deployment process initialized in separate terminal."
+        sleep 2
+    fi
+    main_menu
+}
+
+# --- 3. Create Shortcut ---
+create_shortcut() {
+    # Step 1: Name
+    banner
+    step_header "01" "APPLICATION NAME"
+    instruction_box "
+EXPLANATION: Enter the display name for your application.
+EXAMPLE: 'Visual Studio Code' or 'Elden Ring'
+"
+    NAME=$(gum input --placeholder "INPUT NAME (ESC to abort)")
+    [ -z "$NAME" ] && { main_menu; return; }
+
+    # Step 2: Binary
+    banner
+    step_header "02" "TARGET ACQUISITION"
+    instruction_box "
+EXPLANATION: Locate the primary execution file (Binary or Script).
+EXAMPLES:
+- Linux: 'bin/app.sh'
+- Windows: 'game.exe'
+"
+    if gum confirm "Open file picker to select target?"; then
+        EXEC_PATH=$(gum file "$HOME" --header "SELECT EXECUTABLE")
+    else
+        main_menu; return
+    fi
+    [ -z "$EXEC_PATH" ] && { main_menu; return; }
+
+    IS_EXE=false
+    [[ "$EXEC_PATH" == *.exe ]] && IS_EXE=true
+
+    # Step 3: Icon
+    banner
+    step_header "03" "VISUAL ASSET MAPPING"
+    instruction_box "
+EXPLANATION: Assign an icon to represent the app in your menu.
+REQUIRED: PNG or SVG format.
+"
+    PICK_ICON=$(gum choose "Select Icon File" "Skip / Use Default")
+    
+    if [ "$PICK_ICON" == "Select Icon File" ]; then
+        ICON_PATH=$(gum file "$(dirname "$EXEC_PATH")" --header "SELECT ICON")
+    else
+        ICON_PATH=""
+    fi
+
+    # Step 4: Resolution
+    banner
+    step_header "04" "DISPLAY STRATEGY"
+    instruction_box "
+EXPLANATION: Define the resolution layer for the application.
+- DEFAULT: Use system settings (Recommended for standard apps).
+- FORCED: Scale to specific dimensions (Best for heavy games).
+"
+    RES_CHOICE=$(gum choose --header "Select display mode" \
+        "Keep System Default (Recommended)" \
+        "Force 720p (Better Performance)" \
+        "Force LowRes (800x600)" \
+        "Virtual Fullscreen (Gamescope)" \
+        "Back to Menu")
+    
+    [[ -z "$RES_CHOICE" || "$RES_CHOICE" == "Back to Menu" ]] && { main_menu; return; }
+
+    case "$RES_CHOICE" in
+        "Keep System Default (Recommended)") RES_CMD="" ;;
+        "Force 720p (Better Performance)") RES_CMD="gamescope -w 1280 -h 720 -r 60 -- " ;;
+        "Force LowRes (800x600)") RES_CMD="gamescope -w 800 -h 600 -r 60 -- " ;;
+        "Virtual Fullscreen (Gamescope)") RES_CMD="gamescope -f -w 1366 -h 768 -- " ;;
+    esac
+
+    # Step 5: Optimization
+    banner
+    step_header "05" "PERFORMANCE HOOKS"
+    instruction_box "
+EXPLANATION: Inject system-level performance boosts.
+- GAMEMODE: CPU priority boost.
+- MANGOHUD: On-screen FPS counter.
+- PRIME-RUN: Use NVIDIA GPU (For Laptops with dual graphics).
+
+INFO: Use [SPACE] to select MULTIPLE, then [ENTER] to confirm.
+"
+    EXTRAS=$(gum choose --no-limit --header "Select optimizations" \
+        "GameMode" "MangoHud" "NVIDIA Prime Run" "None / Skip this step")
+    
+    [ $? -ne 0 ] && { main_menu; return; }
+    [[ "$EXTRAS" == *"None / Skip"* ]] && EXTRAS=""
+
+    FINAL_CMD="$RES_CMD"
+    [[ "$EXTRAS" == *"GameMode"* ]] && FINAL_CMD="gamemoderun $FINAL_CMD"
+    [[ "$EXTRAS" == *"MangoHud"* ]] && FINAL_CMD="mangohud $FINAL_CMD"
+    [[ "$EXTRAS" == *"NVIDIA Prime Run"* ]] && FINAL_CMD="prime-run $FINAL_CMD"
+    [ "$IS_EXE" = true ] && FINAL_CMD="$FINAL_CMD wine"
+    FINAL_CMD="$FINAL_CMD \"$EXEC_PATH\""
+
+    # Step 6: Arguments
+    banner
+    step_header "06" "COMMAND PARAMETERS"
+    instruction_box "
+EXPLANATION: Add extra launch flags if the app requires them.
+"
+    ARGS=$(gum input --placeholder "Enter Arguments (ENTER to skip)")
+    [ -n "$ARGS" ] && FINAL_CMD="$FINAL_CMD $ARGS"
+
+    # Step 7: Categories
+    banner
+    step_header "07" "METADATA: PRIMARY CATEGORY"
+    instruction_box "
+EXPLANATION: Select the main group where this app belongs.
+"
+    MAIN_CAT=$(gum choose "Games" "Applications" "Utility" "Multimedia" "Development" "Internet" "Office")
+    [ -z "$MAIN_CAT" ] && { main_menu; return; }
+
+    banner
+    step_header "07" "METADATA: SUB-CATEGORIES"
+    instruction_box "
+EXPLANATION: Refine the classification with specific tags.
+INFO: Use [SPACE] to select MULTIPLE, then [ENTER] to confirm.
+"
+    case "$MAIN_CAT" in
+        "Games")
+            SUB_CAT=$(gum choose --no-limit "Game" "ActionGame" "AdventureGame" "ArcadeGame" "BoardGame" "CardGame" "Emulator" "RolePlaying" "Simulation" "SportsGame" "StrategyGame")
+            ;;
+        "Applications")
+            SUB_CAT=$(gum choose --no-limit "System" "Settings" "Education" "Science" "Utility")
+            ;;
+        "Utility")
+            SUB_CAT=$(gum choose --no-limit "Utility" "System" "Settings" "FileTools")
+            ;;
+        "Multimedia")
+            SUB_CAT=$(gum choose --no-limit "AudioVideo" "Audio" "Video" "Player" "Recorder" "DiscBurning")
+            ;;
+        "Development")
+            SUB_CAT=$(gum choose --no-limit "Development" "IDE" "Debugger" "Building" "WebDevelopment" "RevisionControl")
+            ;;
+        "Internet")
+            SUB_CAT=$(gum choose --no-limit "Network" "Email" "WebBrowser" "Chat" "FileTransfer" "P2P")
+            ;;
+        "Office")
+            SUB_CAT=$(gum choose --no-limit "Office" "Spreadsheet" "Presentation" "WordProcessor" "ProjectManagement")
+            ;;
+    esac
+    [ $? -ne 0 ] && { main_menu; return; }
+    CATEGORIES=$(echo "$SUB_CAT" | tr '\n' ';')
+
+    # Step 8: Terminal
+    banner
+    step_header "08" "TERMINAL EMULATION"
+    instruction_box "
+EXPLANATION: Does this app run inside a terminal window?
+- YES: For CLI tools/scripts.
+- NO: For graphical apps/games.
+"
+    TERMINAL=$(gum confirm "Require terminal window?" && echo "true" || echo "false")
+
+    # Final Review
+    banner
+    FILENAME=$(echo "$NAME" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/_/g')
+    DEST="$APP_DIR_USER/menuforge_$FILENAME.desktop"
+
+    gum style --foreground "$PRIMARY" --bold "DEPLOYMENT SUMMARY:"
+    echo "------------------------------------------------------------"
+    gum style --foreground "$PRIMARY" "  NAME:     $NAME"
+    echo "  COMMAND:  $FINAL_CMD"
+    echo "  ICON:     ${ICON_PATH:-System Default}"
+    echo "  TAGS:     $CATEGORIES"
+    echo "  LOCATION: $DEST"
+    echo "------------------------------------------------------------"
+
+    if gum confirm "INITIALIZE DEPLOYMENT?"; then
+        # Forging Animation
+        banner
+        gum spin --spinner hammer --title "FORGING LINK INTERFACE..." -- sleep 2
+        
+        cat <<EOF > "$DEST"
+[Desktop Entry]
+Name=$NAME
+Exec=$FINAL_CMD
+Path=$(dirname "$EXEC_PATH")
+Icon=$ICON_PATH
+Terminal=$TERMINAL
+Type=Application
+Categories=$CATEGORIES;
+Comment=Created by MenuForge (Crystal Studio Labs)
+X-Created-By=MenuForge
+EOF
+        chmod +x "$DEST"
+        refresh_menu
+        banner
+        gum style --foreground 10 --bold "✓ DEPLOYMENT SUCCESSFUL"
+        sleep 2
+    fi
+    main_menu
+}
+
+# --- 4. Remove Shortcut ---
+remove_shortcut() {
+    banner
+    step_header "!" "MANAGEMENT: REMOVE LINK"
+    
+    mapfile -t FILES < <(grep -l "X-Created-By=MenuForge" "$APP_DIR_USER"/menuforge_*.desktop 2>/dev/null)
+    
+    if [ ${#FILES[@]} -eq 0 ]; then
+        gum style --foreground "$PRIMARY" "No managed links detected."
+        sleep 2
+        main_menu
+        return
+    fi
+
+    mapfile -t NAMES < <(grep "^Name=" "${FILES[@]}" | cut -d'=' -f2)
+    
+    SELECTED_NAME=$(gum choose "${NAMES[@]}" "Back")
+
+    if [[ -z "$SELECTED_NAME" || "$SELECTED_NAME" == "Back" ]]; then
+        main_menu
+        return
+    fi
+
+    SELECTED_FILE=$(grep -l "^Name=$SELECTED_NAME" "${FILES[@]}")
+
+    if gum confirm "Permanently remove '$SELECTED_NAME'?"; then
+        banner
+        gum spin --spinner pulse --title "PURGING LINK DATA..." -- sleep 1
+        rm "$SELECTED_FILE"
+        refresh_menu
+        gum style --foreground 10 "✓ Link removed."
+        sleep 1
+    fi
+    main_menu
+}
+
+# Start App
+main_menu
