@@ -15,15 +15,16 @@ gum style --bold "Initializing installation of core components:"
 echo " - GameMode (Performance)"
 echo " - MangoHud (Telemetry)"
 echo " - Gamescope (Resolution)"
+echo " - NVIDIA Prime (Dual-GPU Support)"
 echo " - Wine (Compatibility)"
 echo ""
 
 # Actual installation
 if command -v pacman &> /dev/null; then
-    sudo pacman -S --needed --noconfirm gamemode mangohud gamescope wine
+    sudo pacman -S --needed --noconfirm gamemode mangohud gamescope nvidia-prime wine
 else
     echo "Distro not officially supported for auto-install."
-    echo "Please install gamemode, mangohud, gamescope, and wine manually."
+    echo "Please install gamemode, mangohud, gamescope, nvidia-prime, and wine manually."
 fi
 
 echo ""
