@@ -144,7 +144,13 @@ menuforge
 ## 📊 Analytics & Community
 
 ### 🌟 Star History
-[![Star History Chart](https://api.star-history.com/svg?repos=Crystal-Studio-Labs/MenuForge&theme=dark)](https://star-history.com/#Crystal-Studio-Labs/MenuForge&Date)
+<a href="https://www.star-history.com/?repos=Crystal-Studio-Labs%2FMenuForge&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=Crystal-Studio-Labs/MenuForge&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=Crystal-Studio-Labs/MenuForge&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=Crystal-Studio-Labs/MenuForge&type=date&legend=top-left" />
+ </picture>
+</a>
 
 <br>
 
@@ -208,5 +214,9 @@ This project is licensed under the **MIT License**. See the [LICENSE](LICENSE) f
 <br>
 
 Developed with ❤️ and ☕ by **[SahooShuvranshu](https://github.com/SahooShuvranshu)** & **[Crystal Studio Labs](https://github.com/Crystal-Studio-Labs)**
+
+<br>
+
+Give 🌟 To This Project! It Will Help And Support This Project.
 
 </div>
