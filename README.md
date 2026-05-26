@@ -11,13 +11,13 @@
 
 <br>
 
-**The universal Desktop Entry generator and management system for Linux.**
-
-*Bridging the gap between raw binaries and a polished desktop environment.*
+![Visitors](https://count.getloli.com/@MenuForge?theme=3d-num&darkmode=1)
 
 <br>
 
-![Visitors](https://count.getloli.com/@MenuForge?theme=3d-num&darkmode=1)
+**The universal Desktop Entry generator and management system for Linux.**
+
+*Bridging the gap between raw binaries and a polished desktop environment.*
 
 <br>
 
@@ -64,7 +64,7 @@ Whether you are integrating standalone binaries, custom developer scripts, or hi
 ### 🛠️ Professional Management System
 *   **Safe Add/Remove:** Dedicated interface to manage user-created shortcuts without touching system files.
 *   **Isolated Metadata:** Uses custom `X-Created-By=MenuForge` tags for non-destructive management.
-*   **Dependency Manager:** Built-in tool to verify and install GameMode, MangoHud, Gamescope, and Wine.
+*   **Dependency Manager:** Built-in tool to verify and install GameMode, MangoHud, Gamescope, NVIDIA-Prime, and Wine.
 
 <br>
 

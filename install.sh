@@ -47,7 +47,7 @@ gum format "
 This installer will deploy **MenuForge v1.1.0-Stable** to your system.
 
 **Deployment Steps:**
-1. Install system dependencies (GameMode, MangoHud, etc.)
+1. Install system dependencies (GameMode, MangoHud, NVIDIA-Prime, etc.)
 2. Deploy binaries and official assets (Icons)
 3. Generate desktop launcher for menu integration
 
@@ -62,7 +62,7 @@ echo "This may require your sudo password..."
 
 # Run pacman in a spin
 gum spin --spinner dot --title "Syncing repositories and installing packages..." -- \
-    sudo pacman -S --needed --noconfirm gamemode mangohud gamescope wine imagemagick
+    sudo pacman -S --needed --noconfirm gamemode mangohud gamescope nvidia-prime wine imagemagick
 
 # --- 3. File Deployment ---
 banner
