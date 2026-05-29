@@ -5,7 +5,7 @@
 # MenuForge
 
 ![GitHub Repo](https://img.shields.io/badge/Repository-Crystal--Studio--Labs-00D7FF?style=for-the-badge&logo=github)
-![Version](https://img.shields.io/badge/version-v1.1.0-FF00D7?style=for-the-badge)
+![Version](https://img.shields.io/badge/version-v1.2.0-FF00D7?style=for-the-badge)
 ![Status](https://img.shields.io/badge/Status-Stable-brightgreen?style=for-the-badge)
 ![License](https://img.shields.io/badge/license-MIT-white?style=for-the-badge)
 
@@ -28,7 +28,7 @@
 
 <br>
 
-[Overview](#-overview) • [Preview](#-preview) • [Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Support](#-support)
+[Overview](#-overview) • [Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Support](#-support)
 
 </div>
 
@@ -40,9 +40,9 @@
 
 ## 🚀 Overview
 
-**MenuForge** is a professional-grade TUI utility designed to provide a seamless bridge between manually installed software and the modern Linux desktop environment. 
+**MenuForge v1.2.0** is a professional-grade TUI utility designed to provide a high-performance bridge between manually installed software and the modern Linux desktop environment. 
 
-Whether you are integrating standalone binaries, custom developer scripts, or high-end games, MenuForge ensures your software is indexed, optimized, and ready for action. It eliminates the friction of manual `.desktop` file creation while injecting powerful performance hooks.
+By leveraging modular Bash architecture and a deep hardware-interrogation engine, MenuForge automates the creation of optimized `.desktop` entries. It handles everything from native distribution theming to surgical performance hooks like GameMode and resolution virtualization, ensuring your software is indexed, optimized, and visually integrated.
 
 <br>
 
@@ -50,7 +50,7 @@ Whether you are integrating standalone binaries, custom developer scripts, or hi
 
 <div align="center">
   <img src="assets/MenuForge.png" width="800" alt="MenuForge Preview">
-  <p><i>The sleek, interactive MenuForge TUI in action.</i></p>
+  <p><i>The sleek, hardware-aware MenuForge TUI in action.</i></p>
 </div>
 
 <br>
@@ -59,29 +59,26 @@ Whether you are integrating standalone binaries, custom developer scripts, or hi
 
 <br>
 
-## ✨ Features
+## ✨ v1.2.0 Core Features
 
-### 🛠️ Professional Management System
+### 💎 Modular Architecture
+*   **Core Library (`menuforge-lib.sh`):** A centralized logic engine providing unified hardware (PCI/NVIDIA) and OS intelligence across the entire suite.
+*   **Hybrid Theme Engine:** Automatically synchronizes TUI colors with user overrides, KDE Plasma accent colors, or native OS branding (Arch Blue, Mint Green, etc.).
+*   **CLI Argument Orchestrator:** Full support for non-interactive flags, including a system integrity audit command (`--doctor`).
+
+<br>
+
+### 🛠️ Professional Management
 *   **Safe Add/Remove:** Dedicated interface to manage user-created shortcuts without touching system files.
-*   **Isolated Metadata:** Uses custom `X-Created-By=MenuForge` tags for non-destructive management.
-*   **Dependency Manager:** Built-in tool to verify and install GameMode, MangoHud, Gamescope, NVIDIA-Prime, and Wine.
+*   **Isolated Metadata:** Uses custom `X-Created-By=MenuForge` tags for clean, non-destructive auditing.
+*   **Universal Installer:** Native deployment logic for **Arch**, **Debian/Ubuntu**, **Fedora**, and **OpenSUSE** with automated repo configuration.
 
 <br>
 
-### 🎮 Gaming & Power-User Optimizations
-*   **Performance Injection:** One-click integration for `gamemoderun` to boost CPU/GPU priority.
-*   **NVIDIA Prime Support:** Integrated `prime-run` toggle for dual-graphics laptops.
-*   **Hardware Telemetry:** Real-time FPS and system monitoring via `mangohud`.
-*   **Resolution Layering:** Micro-compositor control via `gamescope` (Native, 720p, 800x600).
-*   **Wine Intelligence:** Automatic detection and wrapping for Windows `.exe` files.
-
-<br>
-
-### 🎨 Native Aesthetics & UX
-*   **Forging Animations:** Premium terminal animations (Hammer/Pulse) for a high-end feel.
-*   **Theme Sync:** Automatically synchronizes TUI colors with your active system theme.
-*   **Professional TUI:** Beautiful, spacious design built with the `gum` framework.
-*   **Instant Menu Indexing:** Automatically refreshes launchers (Walker, Rofi, Wofi) upon deployment.
+### 🎮 Gaming Optimizations
+*   **Hardware Intelligence:** Surgical NVIDIA detection to enable high-performance `prime-run` offloading hooks.
+*   **Resolution Layering:** 1-click integration for `gamescope` resolution virtualization (Native, 720p, etc.).
+*   **Performance Hooks:** Integrated support for `gamemoderun` and `mangohud` telemetry.
 
 <br>
 
@@ -129,10 +126,23 @@ chmod +x install.sh
 
 ## ⌨️ Usage
 
-Launch the management console from your terminal or application menu:
-
+### Interactive Mode
+Launch the high-fidelity management console from your terminal:
 ```bash
 menuforge
+```
+
+### Technical Flags
+Perform rapid system interaction or infrastructure auditing:
+```bash
+# Conduct a system integrity audit
+menuforge --doctor
+
+# Display version and authorship
+menuforge --version
+
+# Comprehensive help reference
+menuforge --help
 ```
 
 <br>
@@ -143,26 +153,15 @@ menuforge
 
 ## 📊 Analytics & Community
 
-### 🌟 Star History
-<a href="https://www.star-history.com/?repos=Crystal-Studio-Labs%2FMenuForge&type=date&legend=top-left">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=Crystal-Studio-Labs/MenuForge&type=date&theme=dark&legend=top-left" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=Crystal-Studio-Labs/MenuForge&type=date&legend=top-left" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=Crystal-Studio-Labs/MenuForge&type=date&legend=top-left" />
- </picture>
+### 🤝 Contributors
+<a href="https://github.com/Crystal-Studio-Labs/MenuForge/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Crystal-Studio-Labs/MenuForge" />
 </a>
 
 <br>
 
 ### 🤝 Community
 [![Discord Banner](https://discord.com/api/guilds/1075092446880485376/widget.png?style=banner2)](https://discord.gg/EdbUJHNv9J)
-
-<br>
-
-### 🤝 Contributors
-<a href="https://github.com/Crystal-Studio-Labs/MenuForge/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Crystal-Studio-Labs/MenuForge" />
-</a>
 
 <br>
 

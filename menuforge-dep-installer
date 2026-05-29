@@ -1,34 +1,63 @@
 #!/bin/bash
 
-# MenuForge v1.1.0-Stable Dependency Installer
-# Powered by Crystal Studio Labs
+# MenuForge v1.2.0 Dependency Installer
+# Powered by SahooShuvranshu & Crystal Studio Labs
 
-PRIMARY="#00D7FF"
+if [ -z "$BASH_VERSION" ]; then
+    echo "Error: This script must be run with bash."
+    exit 1
+fi
 
-clear
-gum style --foreground "$PRIMARY" --border double --align center --width 50 "MENUFORGE" "INFRASTRUCTURE DEPLOYMENT"
-echo ""
+# ---------------------------------------------------------
+# Dynamic Environment Bootstrapping
+# Links the shared core library to identify hardware capabilities
+# and distribution-specific package naming.
+# ---------------------------------------------------------
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LIB_PATH="$HOME/.local/bin/menuforge-lib.sh"
+[ -f "$LIB_PATH" ] || LIB_PATH="$SCRIPT_DIR/menuforge-lib.sh"
+[ -f "$LIB_PATH" ] || LIB_PATH="./menuforge-lib.sh"
 
-gum spin --spinner dot --title "Synchronizing Package Repositories..." -- sleep 2
-
-gum style --bold "Initializing installation of core components:"
-echo " - GameMode (Performance)"
-echo " - MangoHud (Telemetry)"
-echo " - Gamescope (Resolution)"
-echo " - NVIDIA Prime (Dual-GPU Support)"
-echo " - Wine (Compatibility)"
-echo ""
-
-# Actual installation
-if command -v pacman &> /dev/null; then
-    sudo pacman -S --needed --noconfirm gamemode mangohud gamescope nvidia-prime wine
+if [ -f "$LIB_PATH" ]; then
+    source "$LIB_PATH"
 else
-    echo "Distro not officially supported for auto-install."
-    echo "Please install gamemode, mangohud, gamescope, nvidia-prime, and wine manually."
+    echo "Architecture Failure: menuforge-lib.sh (core) not found."
+    exit 1
+fi
+
+# Validation: Verify TUI framework availability.
+command -v gum &> /dev/null || error_exit "Runtime Failure: 'gum' (TUI framework) is required but missing."
+
+banner "INFRASTRUCTURE DEPLOYMENT" "v1.2.0 | Developed by SahooShuvranshu & Crystal Studio Labs"
+
+gum spin --spinner dot --title "Synchronizing Package Repositories..." -- sleep 1
+
+gum style --bold "Initiating deployment of high-performance components:"
+echo " - GameMode (Performance Layer)"
+echo " - MangoHud (Telemetry Layer)"
+echo " - Gamescope (Resolution Micro-Compositor)"
+[ "$HAS_NVIDIA" = true ] && echo " - NVIDIA Prime Support (Hybrid Graphics Offloading)"
+echo " - Wine (Compatibility Layer)"
+echo ""
+
+DEPS=$(get_deps)
+
+if [ "$PKG_MANAGER" != "unknown" ]; then
+    echo "This process requires administrative privileges and may take time."
+    sudo -v || error_exit "Sudo authentication failed."
+    
+    bash -c "$INSTALL_CMD $DEPS" || error_exit "Dependency installation failed."
+else
+    gum style --foreground 3 "  [!] Distro not officially supported for auto-install."
+    echo "  Please install core dependencies manually: gamemode, mangohud, gamescope, wine"
+    echo ""
+    gum style --faint "  Press any key to close this terminal..."
+    read -n 1
+    exit 0
 fi
 
 echo ""
 gum style --foreground 10 --bold "✓ ALL COMPONENTS OPERATIONAL"
 echo ""
-gum style --faint "Press any key to close this terminal..."
+gum style --faint "Press any key to exit helper..."
 read -n 1
