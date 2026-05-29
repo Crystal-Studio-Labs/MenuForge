@@ -153,15 +153,26 @@ menuforge --help
 
 ## 📊 Analytics & Community
 
-### 🤝 Contributors
-<a href="https://github.com/Crystal-Studio-Labs/MenuForge/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Crystal-Studio-Labs/MenuForge" />
+### 🌟 Star History
+<a href="https://www.star-history.com/?repos=Crystal-Studio-Labs%2FMenuForge&type=date&legend=top-left">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=Crystal-Studio-Labs/MenuForge&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=Crystal-Studio-Labs/MenuForge&type=Date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=Crystal-Studio-Labs/MenuForge&type=date&legend=top-left" />
+ </picture>
 </a>
 
 <br>
 
 ### 🤝 Community
 [![Discord Banner](https://discord.com/api/guilds/1075092446880485376/widget.png?style=banner2)](https://discord.gg/EdbUJHNv9J)
+
+<br>
+
+### 🤝 Contributors
+<a href="https://github.com/Crystal-Studio-Labs/MenuForge/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Crystal-Studio-Labs/MenuForge" />
+</a>
 
 <br>
 
